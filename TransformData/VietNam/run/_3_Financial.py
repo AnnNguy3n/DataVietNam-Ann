@@ -51,7 +51,7 @@ def setup_Feature(type_time):
         sheet_name = "Total"
     else:
         sheet_name = "Quarter"
-    data_field = pd.read_excel(f'{dict_path_vs["Feature"]}/Feature_Standard_Library_Update(4_2022).xlsx',sheet_name=sheet_name)
+    data_field = pd.read_excel(FILE_FEATURE,sheet_name=sheet_name)
     data_field = data_field.rename(columns={"column":"Feature"})
     return data_field
 
