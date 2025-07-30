@@ -25,7 +25,7 @@ def get_data(args):
         symbol = listCom.loc[idx, "Mã CK▲"]
         if os.path.exists(f"{FOLDER}/BalanceSheet/{symbol}.json"): continue
         try:
-            data = vis.get_data_1_com(symbol, ["BALANCE_SHEET", "INCOME_STATEMENT"])
+            data = vis.get_data_1_com(symbol, ["BALANCE_SHEET", "INCOME_STATEMENT", "CASHFLOW_INDIRECT", "CASHFLOW_DIRECT"])
 
             with open(f"{FOLDER}/BalanceSheet/{symbol}.json", "w", encoding="utf-8") as f:
                 json.dump(data["BALANCE_SHEET"], f, ensure_ascii=False)
