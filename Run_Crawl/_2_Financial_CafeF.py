@@ -31,10 +31,10 @@ def get_data(args):
                 json.dump(data["BALANCE_SHEET"], f, ensure_ascii=False)
             with open(f"{FOLDER}/IncomeStatement/{symbol}.json", "w", encoding="utf-8") as f:
                 json.dump(data["INCOME_STATEMENT"], f, ensure_ascii=False)
-            # with open(f"{FOLDER}/CashFlowDirect/{symbol}.json", "w", encoding="utf-8") as f:
-            #     json.dump(data["CASHFLOW_DIRECT"], f, ensure_ascii=False)
-            # with open(f"{FOLDER}/CashFlowInDirect/{symbol}.json", "w", encoding="utf-8") as f:
-            #     json.dump(data["CASHFLOW_INDIRECT"], f, ensure_ascii=False)
+            with open(f"{FOLDER}/CashFlowDirect/{symbol}.json", "w", encoding="utf-8") as f:
+                json.dump(data["CASHFLOW_DIRECT"], f, ensure_ascii=False)
+            with open(f"{FOLDER}/CashFlowInDirect/{symbol}.json", "w", encoding="utf-8") as f:
+                json.dump(data["CASHFLOW_INDIRECT"], f, ensure_ascii=False)
 
             print(Fore.LIGHTGREEN_EX, idx, symbol, "Done", Style.RESET_ALL, flush=True)
         except Exception as ex:
