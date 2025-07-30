@@ -55,13 +55,12 @@ class CafeF(TransForm):
         Output: None \n
         '''
         super().__init__(dict_path_cf)
-        file = FILE_FEATURE
-        df = pd.read_excel(f'{dict_path_cf["Feature"]}/{file}',sheet_name="CafeF")
+        df = pd.read_excel(FILE_FEATURE,sheet_name="CafeF")
         df = df.rename(columns={"VIS_Raw_F1":"field"})
         self.data_field = df
-        df = pd.read_excel(f'{dict_path_cf["Feature"]}/{file}',sheet_name="Total")
+        df = pd.read_excel(FILE_FEATURE,sheet_name="Total")
         self.data_field_default_year = df
-        df = pd.read_excel(f'{dict_path_cf["Feature"]}/{file}',sheet_name="Quarter")
+        df = pd.read_excel(FILE_FEATURE,sheet_name="Quarter")
         self.data_field_default_quarter = df
 
     def CheckData(self,symbol,type_time,time_detail):
@@ -211,12 +210,12 @@ class VietStock(TransForm):
         Output: None \n
         '''
         super().__init__(dict_path_vs)
-        df = pd.read_excel(f'{dict_path_vs["Feature"]}/{FILE_FEATURE}',sheet_name="VietStock")
+        df = pd.read_excel(FILE_FEATURE,sheet_name="VietStock")
         df = df.rename(columns={"VIS_Raw_F1":"field"})
         self.data_field = df
-        df = pd.read_excel(f'{dict_path_vs["Feature"]}/{FILE_FEATURE}',sheet_name="Total")
+        df = pd.read_excel(FILE_FEATURE,sheet_name="Total")
         self.data_field_default_year = df
-        df = pd.read_excel(f'{dict_path_vs["Feature"]}/{FILE_FEATURE}',sheet_name="Quarter")
+        df = pd.read_excel(FILE_FEATURE,sheet_name="Quarter")
         self.data_field_default_quarter = df
 
     def CheckData(self,symbol,type_time,time_detail):

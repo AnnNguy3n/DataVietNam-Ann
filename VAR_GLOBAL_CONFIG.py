@@ -1,3 +1,5 @@
+import os
+
 #
 FOLDER_DATALAKE = "/home/annnguy3n/Desktop/Project-Data-Vietnam/TEMP_DATALAKE"
 FOLDER_DATA_WH = "/home/annnguy3n/Desktop/Project-Data-Vietnam/TEMP_DATAWH"
@@ -14,7 +16,7 @@ QUARTER_KEY = "2/2025"
 # YEAR_KEY = "2024"
 TYPE_TIME = False # QUATER
 # TYPE_TIME = True  # YEAR
-FILE_FEATURE = "Feature_Standard_Library_Update(4_2022).xlsx"
+FILE_FEATURE = os.path.abspath("Data_Rule/Feature_Standard_Library_Update(4_2022).xlsx")
 
 # merge
 
