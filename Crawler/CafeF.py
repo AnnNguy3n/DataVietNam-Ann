@@ -2,7 +2,7 @@ from Crawler.Base import Base
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 import pandas as pd
-# from io import StringIO
+from io import StringIO
 import json
 import numpy as np
 import time
@@ -17,6 +17,7 @@ CAFEF_URL = {
     "CASHFLOW_DIRECT"   : "https://cafef.vn/du-lieu/bao-cao-tai-chinh/{}/cashflowdirect/{}/luu-chuyen-tien-te-truc-tiep-.chn",
     "VOLUME"            : "https://cafef.vn/du-lieu/hose/{}.chn",
     "PRICE_CLOSE"       : "https://s.cafef.vn/Ajax/PageNew/DataHistory/PriceHistory.ashx",
+    "PDF"               : "https://cafef.vn/du-lieu/Ajax/CongTy/BaoCaoTaiChinh.aspx?sym={}"
 }
 
 
@@ -177,3 +178,57 @@ class CafeF_PriceClose(CafeF_Crawler):
             except: pass
         else:
             raise Exception(f"Khong tai duoc du lieu")
+
+
+class CafeF_PDF(CafeF_Crawler):
+    def __init__(self, type_crawler="R", type_cycle = "quý 1", year = "now"):
+        assert type_crawler == "R"
+        super().__init__(type_crawler)
+
+        type_cycle = ["năm", "quý 1", "quý 2", "quý 3", "quý 4"].index(type_cycle)
+        if type(year) == str and year == "now":
+            year = datetime.now().year
+        elif type(year) == int:
+            pass
+        else:
+            raise Exception ("Invalid year type, must be str('now') or int")
+        self.year = year
+        self.type_cycle = type_cycle
+        self.text_filter = ["CN", "Q1", "Q2", "Q3", "Q4"][type_cycle] + f"/{year}"
+
+    def get_pdf_1_com(self, symbol):
+        for _ in range(10):
+            try:
+                r = self.session.get(CAFEF_URL["PDF"].format(symbol))
+                assert r.status_code == 200
+                break
+            except: pass
+        else:
+            raise Exception("Timed out: get_pdf_1_com")
+
+        soup = BeautifulSoup(r.content, "html.parser")
+        tables = soup.find_all("table")
+        assert len(tables) == 2
+
+        df = pd.read_html(StringIO(tables[1].prettify()))[0]
+        assert (df.loc[0].values == ['Loại báo cáo', 'Thời gian', 'Tải về']).all()
+        df.columns = df.loc[0]
+        df = df.drop(index=0).reset_index(drop=True)
+
+        list_download_url = []
+        list_tr = tables[1].find_all("tr")
+        assert len(list_tr) == df.shape[0] + 1
+
+        for tr in list_tr[1:]:
+            list_td = tr.find_all("td")
+            assert len(list_td) == 3
+            list_a = list_td[2].find_all("a")
+            assert len(list_a) == 1
+
+            list_download_url.append(list_a[0]["href"])
+
+        df["Tải về"] = list_download_url
+
+        temp = df[df["Thời gian"] == self.text_filter].reset_index(drop=True)
+
+        return dict(zip(temp["Loại báo cáo"], temp["Tải về"]))

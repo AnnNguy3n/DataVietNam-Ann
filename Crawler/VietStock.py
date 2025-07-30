@@ -20,6 +20,7 @@ VIETSTOCK_URL = {
     "CASH_DIVIDEND"  : "https://finance.vietstock.vn/lich-su-kien.htm?page={}&from={}&to={}&exchange=-1&tab=1&group=13",
     "BONUS_SHARE"    : "https://finance.vietstock.vn/lich-su-kien.htm?page={}&from={}&to={}&exchange=-1&tab=1&group=14",
     "STOCK_DIVIDEND" : "https://finance.vietstock.vn/lich-su-kien.htm?page={}&from={}&to={}&exchange=-1&tab=1&group=15",
+    "PDF"         : "https://finance.vietstock.vn/{}/tai-tai-lieu.htm?doctype=1"
 }
 
 
@@ -329,3 +330,38 @@ class VietStock_Dividend(VietStock_Crawler):
         df3["Loại Sự kiện"] = "Trả cổ tức bằng cổ phiếu"
         df = pd.concat([df1,df2,df3],ignore_index=True)
         return df
+
+
+class VietStock_PDF(VietStock_Crawler):
+    def __init__(self, type_crawler="S"):
+        super().__init__(type_crawler)
+
+    def get_pdf_1_com(self, symbol):
+        self.driver.get("https://example.com/")
+        self.driver.get(VIETSTOCK_URL["PDF"].format(symbol))
+        self.scroll_to_bottom(1)
+
+        for _ in range(60):
+            soup = BeautifulSoup(self.driver.page_source, "html.parser")
+            list_p = soup.find_all("p", {"class": "i-b-d bg-hover-yellow"})
+            if len(list_p) > 0:
+                break
+            else: time.sleep(1)
+        else:
+            raise Exception("Timeout")
+
+        list_reporttype = []
+        list_lastupdate = []
+        list_download_url = []
+        for p in list_p:
+            filename = p.find("span", {"class": "doc__ttl-file-name"}).text.strip()
+            lastupdate = p.find("span", {"class": "doc__ttl--lastupdate"}).text.strip()
+            url = p.find("a")["href"].replace(" ", "%20")
+            list_reporttype.append(filename)
+            list_lastupdate.append(lastupdate)
+            list_download_url.append(url)
+
+        temp = pd.DataFrame({"Report Type": list_reporttype,
+                             "Last Update": list_lastupdate,
+                             "Download": list_download_url})
+        return dict(zip(temp["Report Type"], temp["Download"]))
