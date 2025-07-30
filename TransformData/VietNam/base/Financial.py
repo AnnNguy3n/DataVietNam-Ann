@@ -189,8 +189,8 @@ class CafeF(TransForm):
             self.Financial_F0_to_F1(symbol,type_time)
             self.Financial_F1_to_F2(symbol,type_time)
             self.Financial_F2_to_F3(symbol,type_time)
-        except:
-            print(symbol,type_time,"CF")
+        except Exception as ex:
+            print(symbol,type_time,"CF",ex.args)
             return False
         return True
 
@@ -346,6 +346,7 @@ class VietStock(TransForm):
             self.Financial_F0_to_F1(symbol,type_time)
             self.Financial_F1_to_F2(symbol,type_time)
             self.Financial_F2_to_F3(symbol,type_time)
-        except:
+        except Exception as ex:
+            print(symbol,type_time,"VS",ex.args)
             return False
         return True
