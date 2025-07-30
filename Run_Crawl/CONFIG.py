@@ -1,9 +1,20 @@
-CYCLE_TYPE = "quý 2"
-# CYCLE_TYPE = "năm"
+"""Không cần chỉnh sửa file này nữa vì đã lấy từ file VAR_GLOBAL_CONFIG"""
+import _lib_path_
+import VAR_GLOBAL_CONFIG
 
-LAST_DATE = "2025-07-23"
+try:
+    VAR_GLOBAL_CONFIG.YEAR_KEY
+    CYCLE_TYPE = "năm"
+    assert VAR_GLOBAL_CONFIG.TYPE_TIME
+except:
+    VAR_GLOBAL_CONFIG.QUARTER_KEY
+    CYCLE_TYPE = "quý " + VAR_GLOBAL_CONFIG.QUARTER_KEY[0]
+    assert not VAR_GLOBAL_CONFIG.TYPE_TIME
+finally:
+    print("CYCLE_TYPE:", CYCLE_TYPE)
 
-FOLDER_DATALAKE = "/home/annnguy3n/Desktop/Project-Data-Vietnam/TEMP_DATALAKE"
+LAST_DATE = VAR_GLOBAL_CONFIG.END_DAY_UPDATE
 
-# Không được thay đổi
+FOLDER_DATALAKE = VAR_GLOBAL_CONFIG.FOLDER_DATALAKE
+
 FOLDER_INGESTIONS = f"{FOLDER_DATALAKE}/Ingestion"
