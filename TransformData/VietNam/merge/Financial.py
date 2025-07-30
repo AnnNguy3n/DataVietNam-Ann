@@ -27,7 +27,7 @@ Data = pd.read_excel(f"{PATH_COMPARE}/{QUARTER_FINANCIAL_FIX_FILE}.xlsx",sheet_n
 # print(len(pd.unique(Data["Symbol"])))
 
 # print(Data)
-# DataFix = pd.read_excel(f"{PATH_COMPARE}/{QUARTER_FINANCAIL_FIX_FILE_BY_HUMAN}.xlsx",sheet_name="Sheet1")
+# DataFix = pd.read_excel(f"{PATH_COMPARE}/{QUARTER_FINANCIAL_FIX_FILE_BY_HUMAN}.xlsx",sheet_name="Sheet1")
 current = 0
 def read_file(path):
     try:
@@ -69,7 +69,7 @@ for com in SYMBOL:
     progress_bar(current,TOTAL,text="Bien doi hang")
 
 DATA["Time"] = [QUARTER_KEY for i in DATA.index]
-DATA.to_excel(f"{FU.PATH_MAIN_CURRENT}/FINANCAIL_{QUARTER_KEY.replace('/','_')}.xlsx",index=False)
+DATA.to_excel(f"{FU.PATH_MAIN_CURRENT}/FINANCIAL_{QUARTER_KEY.replace('/','_')}.xlsx",index=False)
 
 
 # Data["Source"] = Data["Compare"].apply(lambda row: alalyst_code(row))
@@ -87,4 +87,4 @@ DATA.to_excel(f"{FU.PATH_MAIN_CURRENT}/FINANCAIL_{QUARTER_KEY.replace('/','_')}.
 #     df["Symbol"] = [com for i in df.index]
 #     DATA = pd.concat([DATA,df],ignore_index=True)
 #     progress_bar(current,TOTAL,text="Bien doi hang")
-# DATA.to_excel(f"{FU.PATH_MAIN_CURRENT}/FINANCAIL_{QUARTER_KEY.replace('/','_')}.xlsx",index=False)
+# DATA.to_excel(f"{FU.PATH_MAIN_CURRENT}/FINANCIAL_{QUARTER_KEY.replace('/','_')}.xlsx",index=False)
