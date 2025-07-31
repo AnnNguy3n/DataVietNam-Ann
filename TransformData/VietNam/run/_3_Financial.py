@@ -70,7 +70,8 @@ def RunCompare(type_time):
             data = C.get_field("CF","VS")
             data.to_csv(FU.joinPath(FU.PATH_COMPARE,"Financial",type_time,f"{symbol}.csv"),index=False)
             print('perfect')
-        except:
+        except Exception as ex:
+            print(symbol, ex.args)
             can_t_compare.append(symbol)
     pd.DataFrame({"Error_Compare":can_t_compare}).to_excel(FU.joinPath(FU.PATH_COMPARE,"Error",f"{type_time}.xlsx"),index=False)
 

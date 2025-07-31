@@ -140,7 +140,7 @@ class CompareFinancial(Compare):
                     df[column] = df[column].astype(float)
             except:
                 df = self.data_field.copy()
-                df[QUARTER_KEY] = [np.NAN for i in df.index]
+                df[QUARTER_KEY] = [np.nan for i in df.index]
             df = pd.merge(self.data_field,df,on=["Feature"],how="left")
             self.dict_data[key]["company"] = df
 

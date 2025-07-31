@@ -328,8 +328,8 @@ class VietStock(TransForm):
             try:
                 temp = temp[[data.columns[0],self.getTime(type_time)]]
             except KeyError:
-                temp[self.getTime(type_time)] = [np.NaN for i in temp.index]
-                # temp[QUARTER_KEY] = [np.NaN for i in temp.index]
+                temp[self.getTime(type_time)] = [np.nan for i in temp.index]
+                # temp[QUARTER_KEY] = [np.nan for i in temp.index]
                 temp = temp[[data.columns[0],self.getTime(type_time)]]
             temp.to_csv(f'{self.path_object["F3"][type_time]}/{symbol}.csv',index=False)
             return temp
