@@ -71,7 +71,7 @@ class TieuChuan:
             #     return False
             # return True
             cols = data.columns
-            if len(cols) < 2:
+            if len(cols) < 1:
                 return False
             else:
                 return True
