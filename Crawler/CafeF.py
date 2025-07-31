@@ -111,7 +111,60 @@ class CafeF_Volume(CafeF_Crawler):
                 except: pass
             else: raise
         except:
-            raise Exception(f"Khong tai duoc du lieu")
+            # raise Exception(f"Khong tai duoc du lieu")
+            temp = CafeF_Crawler()
+            try:
+                for trial in range(3):
+                    try:
+                        for _ in range(10):
+                            try:
+                                temp.driver.get(CAFEF_URL["VOLUME"].format(symbol.lower()))
+                                if temp.driver.title.strip() not in ["Trang thông báo lỗi 404", "Lỗi kết nối"]:
+                                    temp.scroll_to_bottom()
+                                    time.sleep(15)
+                                else: raise
+                                soup = BeautifulSoup(temp.driver.page_source, "html.parser")
+
+                                list_info = soup.find_all("div", {
+                                    "class": "table-right",
+                                    "id": "transaction-information-table-right"
+                                })
+
+                                assert len(list_info) == 1
+                                break
+                            except: pass
+                        else: raise
+
+                        list_title = []
+                        list_value = []
+                        for item in list_info[0].find_all("div", {"class": "table-right-item"}):
+                            list_p = item.find_all("p")
+                            assert len(list_p) == 2
+                            list_title.append(list_p[0].text)
+                            list_value.append(list_p[1].text.strip().replace(",", ""))
+
+                        def find_and_replace_keyword(key, key_after):
+                            count = 0
+                            idx = None
+                            for i in range(len(list_title)):
+                                if list_title[i] == key:
+                                    count += 1
+                                    list_title[i] = key_after
+                                    idx = i
+                            assert count == 1, list_title
+                            return idx
+
+                        vh = find_and_replace_keyword("Vốn hóa thị trường  (tỷ đồng)", "Vốn hóa thị trường")
+                        p10 = find_and_replace_keyword("KLGD khớp lệnh TB 10 phiên", "KLGD khớp lệnh trung bình 10 phiên:")
+                        ny = find_and_replace_keyword("KLCP đang niêm yết", "KLCP đang niêm yết:")
+                        lh = find_and_replace_keyword("KLCP lưu hành", "KLCP đang lưu hành:")
+                        # temp.quit_crawler()
+                        return pd.DataFrame({"Title": [list_title[i] for i in [p10, ny, lh, vh]], "Value": [list_value[i] for i in [p10, ny, lh, vh]]})
+                    except Exception as e: ex = e
+            except Exception as ex:
+                raise Exception(ex)
+            finally:
+                temp.quit_crawler()
 
 
 class CafeF_Dividend(CafeF_Crawler):
@@ -136,7 +189,61 @@ class CafeF_Dividend(CafeF_Crawler):
                 except: pass
             else: raise
         except:
-            raise Exception(f"Khong tai duoc du lieu")
+            # raise Exception(f"Khong tai duoc du lieu")
+            temp = CafeF_Crawler()
+            try:
+                for trial in range(3):
+                    try:
+                        for _ in range(10):
+                            try:
+                                temp.driver.get(CAFEF_URL["VOLUME"].format(symbol.lower()))
+                                if temp.driver.title.strip() not in ["Trang thông báo lỗi 404", "Lỗi kết nối"]:
+                                    temp.scroll_to_bottom()
+                                    time.sleep(15)
+                                else: raise
+                                soup = BeautifulSoup(temp.driver.page_source, "html.parser")
+
+                                list_dividend = soup.find_all("div", {"id": "list-dividend-payment"})
+                                assert len(list_dividend) == 1
+                                break
+                            except: pass
+                        else: raise
+
+                        list_date = []
+                        list_info = []
+
+                        for item in list_dividend[0].find_all("div", {"class": "dividend-payment-history-item"}):
+                            divs = item.find_all("div")
+                            assert len(divs) == 2
+                            date = divs[0].text.strip()
+                            datetime.strptime(date, "%d/%m/%Y")
+                            list_date.append(date)
+
+                            infos = divs[1].find_all("p")
+                            temp_info = []
+                            for info in infos:
+                                temp_info.append(info.text)
+
+                            list_info.append(temp_info)
+
+                        # temp.quit_crawler()
+                        if len(list_date) == 0:
+                            return pd.DataFrame({"New": ["\n"]})
+                        else:
+                            list_record = []
+                            list_record.append('''
+                            ''')
+                            for i in range(len(list_date)):
+                                record = f" {list_date[i]}: "
+                                record += "                           ".join(list_info[i])
+                                list_record.append(record)
+
+                            return pd.DataFrame({"New": list_record})
+                    except Exception as e: ex = e
+            except Exception as ex:
+                raise Exception(ex)
+            finally:
+                temp.quit_crawler()
 
 
 class CafeF_PriceClose(CafeF_Crawler):
