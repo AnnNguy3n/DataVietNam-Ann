@@ -1,8 +1,12 @@
 import os
 
+
 #
-FOLDER_DATALAKE = "/home/annnguy3n/Desktop/Project-Data-Vietnam/TEMP_DATALAKE"
-FOLDER_DATA_WH = "/home/annnguy3n/Desktop/Project-Data-Vietnam/TEMP_DATAWH"
+FOLDER_DATA_VIETNAM = ""
+
+# Khong duoc thay doi
+FOLDER_DATALAKE = f"{FOLDER_DATA_VIETNAM}/Data Lake"
+FOLDER_DATA_WH = f"{FOLDER_DATA_VIETNAM}/Data WareHouse"
 
 
 # FILE For excel
