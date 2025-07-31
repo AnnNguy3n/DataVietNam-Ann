@@ -13,7 +13,7 @@ MAX_DATE_COUNT_ARG = 30
 MIN_DATE_COUNT_ARG = 7
 
 df_ARG = pd.read_csv(f"{FOLDER_DATALAKE}/Raw_VIS/{END_DAY_UPDATE}/VALUE_ARG.csv")
-start_date = (datetime.strptime(END_DAY_UPDATE, DATE_FORMAT) - timedelta(MAX_DATE_COUNT_ARG)).strftime(DATE_FORMAT)
+start_date = (datetime.strptime(END_DAY_UPDATE, DATE_FORMAT) - timedelta(MAX_DATE_COUNT_ARG - 1)).strftime(DATE_FORMAT)
 
 print(start_date, END_DAY_UPDATE)
 
