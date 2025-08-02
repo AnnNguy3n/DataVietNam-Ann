@@ -63,4 +63,4 @@ PriceCloseForSell["SELL"] = pd.NA
 for symbol in PriceCloseForSell.index:
     PriceCloseForSell.loc[symbol, "SELL"] = get_SELL(symbol)
 
-PriceCloseForSell.to_excel(f"{FOLDER_DATALAKE}/Raw_VIS/{END_DAY_UPDATE}/SELL.xlsx", index=False)
+PriceCloseForSell.to_excel(f"{FOLDER_DATALAKE}/Raw_VIS/{END_DAY_UPDATE}/SELL.xlsx", index=True)
