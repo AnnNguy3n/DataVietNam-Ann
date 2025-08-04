@@ -338,4 +338,5 @@ class CafeF_PDF(CafeF_Crawler):
 
         temp = df[df["Thời gian"] == self.text_filter].reset_index(drop=True)
 
-        return dict(zip(temp["Loại báo cáo"], temp["Tải về"]))
+        # return dict(zip(temp["Loại báo cáo"], temp["Tải về"]))
+        return temp

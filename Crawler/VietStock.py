@@ -364,4 +364,5 @@ class VietStock_PDF(VietStock_Crawler):
         temp = pd.DataFrame({"Report Type": list_reporttype,
                              "Last Update": list_lastupdate,
                              "Download": list_download_url})
-        return dict(zip(temp["Report Type"], temp["Download"]))
+        # return dict(zip(temp["Report Type"], temp["Download"]))
+        return temp
