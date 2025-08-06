@@ -36,7 +36,7 @@ Financial["ValueARG"] = pd.NA
 VolARG_ValARG = pd.read_excel(f"{FOLDER}/ValARG_VolARG.xlsx")
 VolARG_ValARG.set_index("Symbol", inplace=True)
 for i in range(len(Financial)):
-    sym = Financial.loc[i, "Symbol"]
+    sym = Financial.index[i]
     try:
         Financial.loc[i, ["VolumeARG", "ValueARG"]] = VolARG_ValARG.loc[sym, ["VolumeARG", "ValueARG"]]
     except:
