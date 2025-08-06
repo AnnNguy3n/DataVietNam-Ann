@@ -38,7 +38,7 @@ VolARG_ValARG.set_index("Symbol", inplace=True)
 for i in range(len(Financial)):
     sym = Financial.index[i]
     try:
-        Financial.loc[i, ["VolumeARG", "ValueARG"]] = VolARG_ValARG.loc[sym, ["VolumeARG", "ValueARG"]]
+        Financial.loc[sym, ["VolumeARG", "ValueARG"]] = VolARG_ValARG.loc[sym, ["VolumeARG", "ValueARG"]]
     except:
         print("Khong tim thay VolumeARG, ValueARG cua", sym)
 
